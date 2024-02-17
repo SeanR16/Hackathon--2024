@@ -1,0 +1,124 @@
+<head>
+    <link rel = "stylesheet" href = "algebraicChess.css">
+    <title>DIE</title>
+</head>
+<body>
+    <h1>Best Move (algebraic chess notation)</h1>
+    <img id="chessBoard" src="board0.png" alt="">
+    <button onclick = "startGame()" id = "start">Begin Game</button><br><br>
+    <label for="Move">Move:</label>
+    <input type="text" id="Move"><br><br>
+    <button onclick="checkInput()" id = "submit">Submit Move</button>
+        <script>
+        const moves = ["Qh1+","Nd3+","Rxf5+", "dummyVariable"];
+        var randNum = Math.floor(Math.random() * 3);
+        var startBtn = document.getElementById("start");
+        var moveInput = document.getElementById("Move");
+        var subButton = document.getElementById("submit");
+        var show = function(elem) {
+            elem.style.display = 'inline';
+        };
+        var hide = function(elem) {
+            elem.style.display = 'none';
+        };
+        function startGame()
+        {
+            hide(startBtn);
+            show(moveInput);
+            show(subButton);
+            displayBoard(randNum);
+        }
+        function checkInput()
+        {
+            var inp = document.getElementById("Move").value;
+            var actual = moves[randNum];
+            if(inp === actual)
+            {
+                alert("Correct Move");
+            }
+            else
+            {
+                document.getElementById("Move").value ="";
+            }
+        }
+
+        function displayBoard(randNum)
+        {
+            const image = document.getElementById("chessBoard");
+            const boards = ["board1.png","board2.png","board3.png"];
+            image.src = boards[randNum];
+        }
+    </script>
+    <div>
+        <div id = "Values">
+            Time: <span id = "time"></span><br/>
+            Clicks: <span id = "clicks"></span><br/>
+            Average: <span id = "average"></span><br/>
+            </div>
+            <div id = "ClickBox">
+                <button id = "StartButton">Begin</button>
+            </div>
+            <script type="text/javascript">
+                var clicks;
+                var duration = 5;
+                var startTime;
+                var gameOver = false;
+                var timeText = document.getElementById("time");
+                var clickText = document.getElementById("clicks");
+                var averageText = document.getElementById("average");
+                var startButton = document.getElementById("StartButton");
+                var clickBox = document.getElementById("ClickBox");
+                
+                var show = function(elem) {
+                    elem.style.display = 'inline';
+                };
+                var hide = function(elem) {
+                    elem.style.display = 'none';
+                };
+        
+                function startgame()
+                {
+                    console.log("Game Has Started");
+                    hide(startButton);
+                    clicks = -1;
+                    gameOver = false;
+                    startTime = new Date().getTime();
+                    var timerID = setInterval(function(){
+                        var delta = (new Date().getTime() - startTime) / 1000;
+                        if(delta < duration - 0.005)
+                        {
+                            timeText.textContent = delta.toFixed(3);
+                            averageText.textContent = (clicks / delta).toFixed(2);
+                        }
+                        else
+                        {
+                            gameOver = true;
+                            clearInterval(timerID);
+                            endGame();
+                        }
+                    }, 1);
+                }
+                function endGame()
+                {
+                    var cps = clicks / duration;
+                    timeText.textContent = duration.toFixed(3);
+                    averageText.textContent = cps;
+                    show(startButton);
+                    setTimeout(function() {
+                        alert("You Clicked "+clicks+" Times in 5 seconds making your CPS: "+cps);
+                    }, 5)
+                }
+        
+                startButton.addEventListener("click", function(e) {
+                    startgame();
+                });
+        
+                clickBox.addEventListener("click", function(e) {
+                if (gameOver == false) {
+                    clicks++;
+                    clickText.textContent = clicks;
+                    }
+                });
+            </script>
+    </div>
+</body>
