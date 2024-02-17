@@ -1,6 +1,76 @@
 <head>
-    
+    <link rel="stylesheet" href = "cpsTest.css">
+    <title>CPS Test</title>
 </head>
 <body>
+    <div id = "Values">
+    Time: <span id = "time"></span><br/>
+    Clicks: <span id = "clicks"></span><br/>
+    Average: <span id = "average"></span><br/>
+    </div>
+    <div id = "ClickBox">
+        <button id = "StartButton">Begin</button>
+    </div>
+    <script type="text/javascript">
+        var clicks;
+        var duration = 5;
+        var startTime;
+        var gameOver = false;
+        var timeText = document.getElementById("time");
+        var clickText = document.getElementById("clicks");
+        var averageText = document.getElementById("average");
+        var startButton = document.getElementById("StartButton");
+        var clickBox = document.getElementById("ClickBox");
+        
+        var show = function(elem) {
+            elem.style.display = 'inline';
+        };
+        var hide = function(elem) {
+            elem.style.display = 'none';
+        };
 
+        function startGame()
+        {
+            console.log("Game Has Started");
+            hide(startButton);
+            clicks = -1;
+            gameOver = false;
+            startTime = new Date().getTime();
+            var timerID = setInterval(function(){
+                var delta = (new Date().getTime() - startTime) / 1000;
+                if(delta < duration - 0.005)
+                {
+                    timeText.textContent = delta.toFixed(3);
+                    averageText.textContent = (clicks / delta).toFixed(2);
+                }
+                else{
+                    gameOver = true;
+                    clearInterval(timerID);
+                    endGame();
+                }
+            }, 1);
+        }
+        function endGame()
+        {
+            var cps = clicks / duration;
+            timeText.textContent = duration.toFixed(3);
+            averageText.textContent = cps;
+            show(startButton);
+            setTimeout(function() {
+                alert("You Clicked "+clicks+" Times in 5 seconds making your CPS: "+cps);
+            }, 5)
+        }
+
+        startButton.addEventListener("click", function(e) {
+            startGame();
+        });
+
+        clickBox.addEventListener("click", function(e) {
+        if (gameOver == false) {
+            clicks++;
+            clickText.textContent = clicks;
+            console.log("Click");
+            }
+        });
+    </script>
 </body>
