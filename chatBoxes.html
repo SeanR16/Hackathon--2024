@@ -1,0 +1,233 @@
+<html>
+<head>
+    <link rel = "stylesheet" href = "chatBoxes.css">
+    <title>I AM GOING TO KILL MYSELF</title>
+
+</head>
+<body>
+    <div>
+        <div class = "textInput">
+               <label for = "querey"> Input your querey: </label>
+                    <br>
+                    <textarea name = "querey" rows = 2 cols= "40">
+                    </textarea>
+                    <br><br>
+            </div>
+            <div class = "response">
+                <img id="chessBoard" src="board0.png" alt="">
+                <button onclick = "startGame()" id = "start">Begin Game</button><br><br>
+                <label for="Move">Move:</label>
+                <input type="text" id="Move"><br><br>
+                <button onclick="checkInput()" id = "submit">Submit Move</button>
+                <script>
+                const moves = ["Qh1+","Nd3+","Rxf5+", "dummyVariable"];
+                var randNum = Math.floor(Math.random() * 3);
+                var startBtn = document.getElementById("start");
+                var moveInput = document.getElementById("Move");
+                var subButton = document.getElementById("submit");
+                var show = function(elem) {
+                    elem.style.display = 'inline';
+                };
+                var hide = function(elem) {
+                    elem.style.display = 'none';
+                };
+                function startGame()
+                {
+                    hide(startBtn);
+                    show(moveInput);
+                    show(subButton);
+                    displayBoard(randNum);
+                }
+                function checkInput()
+                {
+                    var inp = document.getElementById("Move").value;
+                    var actual = moves[randNum];
+                    if(inp === actual)
+                    {
+                        alert("Correct Move");
+                    }
+                    else
+                    {
+                        document.getElementById("Move").value ="";
+                    }
+                }
+
+                function displayBoard(randNum)
+                {
+                    const image = document.getElementById("chessBoard");
+                    const boards = ["board1.png","board2.png","board3.png"];
+                    image.src = boards[randNum];
+                }
+                </script>
+            </div>
+            <div class = "textInput">
+                <label for = "querey"> Input your querey: </label>
+                <br>
+                <textarea name = "querey" rows = 2 cols= "40">
+                </textarea>
+                <br><br>
+            </div>
+            <div class = response>
+                <div id = "Values">
+                    Time: <span id = "time"></span><br/>
+                    Clicks: <span id = "clicks"></span><br/>
+                    Average: <span id = "average"></span><br/>
+                </div>
+                    <div id = "ClickBox">
+                        <button id = "StartButton">Begin</button>
+                    </div>
+                    <script type="text/javascript">
+                        var clicks;
+                        var duration = 5;
+                        var startTime;
+                        var gameOver = false;
+                        var timeText = document.getElementById("time");
+                        var clickText = document.getElementById("clicks");
+                        var averageText = document.getElementById("average");
+                        var startButton = document.getElementById("StartButton");
+                        var clickBox = document.getElementById("ClickBox");
+                        
+                        var show = function(elem) {
+                            elem.style.display = 'inline';
+                        };
+                        var hide = function(elem) {
+                            elem.style.display = 'none';
+                        };
+                
+                        function startgame()
+                        {
+                            console.log("Game Has Started");
+                            hide(startButton);
+                            clicks = -1;
+                            gameOver = false;
+                            startTime = new Date().getTime();
+                            var timerID = setInterval(function(){
+                                var delta = (new Date().getTime() - startTime) / 1000;
+                                if(delta < duration - 0.005)
+                                {
+                                    timeText.textContent = delta.toFixed(3);
+                                    averageText.textContent = (clicks / delta).toFixed(2);
+                                }
+                                else
+                                {
+                                    gameOver = true;
+                                    clearInterval(timerID);
+                                    endGame();
+                                }
+                            }, 1);
+                        }
+                        function endGame()
+                        {
+                            var cps = clicks / duration;
+                            timeText.textContent = duration.toFixed(3);
+                            averageText.textContent = cps;
+                            show(startButton);
+                            setTimeout(function() {
+                                alert("You Clicked "+clicks+" Times in 5 seconds making your CPS: "+cps);
+                            }, 5)
+                        }
+                
+                        startButton.addEventListener("click", function(e) {
+                            startgame();
+                        });
+                
+                        clickBox.addEventListener("click", function(e) {
+                        if (gameOver == false) {
+                            clicks++;
+                            clickText.textContent = clicks;
+                            }
+                        });
+                    </script>
+                </div>
+            </div>
+            <div class = "textInput">
+                <label for = "querey"> Input your querey: </label>
+                <br>
+                <textarea name = "querey" rows = 2 cols= "40">
+                </textarea>
+                <br><br>
+            </div>
+            <div class = "response">
+                <div>
+                    <button type="button" class="button" onclick="storeVar(1)">
+                        <img src="rock.jpg">
+                    </button>
+                    <button type="button" class="button" onclick="storeVar(2)">
+                        <img src="paper.jpg">
+                    </button>
+                    <button type="button" class="button" onclick="storeVar(3)">
+                        <img src="scissors.jpg">
+                    </button>
+                </div>
+                <p1> player score: <span id="playerScore">0</span> - computer score: 
+                    <span id="computerScore">0</span> 
+                </p1>
+                <br>
+                <script>
+                    var playerScore = 0;
+                    var computerScore = 0;
+                 
+                    function storeVar(v){
+                        var player = v;
+                        var randomNum = computer();
+                        check(randomNum, player);
+                        updateScores();
+                        gameOver(playerScore, computerScore);
+                        return player;
+                    }
+                    function computer() {
+                        var num =  Math.floor((Math.random() * (3)) + 1);
+                        var computerPicture;
+                        return num; 
+                    }
+                
+                    //rock = 1 paper = 2 scissors = 3
+                    function check(randomNum, player){
+                        if ((randomNum === 1 && player === 3) || (randomNum === 2 && player === 1) || (randomNum === 3 && player === 2)){
+                            var playerPoint = "point to computer";
+                            alert (playerPoint);
+                            computerScore += 1;;
+                        }
+                        else if ((randomNum === 3 && player === 1) || (randomNum === 1 && player === 2) || (randomNum === 2 && player === 3)){
+                            var playerPoint = "point to player";
+                            alert (playerPoint);
+                            playerScore += 1;
+                        }
+                        else{
+                            var playerPoint = "Draw";
+                            alert (playerPoint);
+                        }
+                    }
+                    function updateScores() {
+                        document.getElementById("playerScore").innerText = playerScore;
+                        document.getElementById("computerScore").innerText = computerScore;
+                    }
+                    function gameOver(playerScore, computerScore){
+                        if (playerScore === 3 || computerScore === 3)
+                        {
+                            var elems = document.getElementsByClassName("button");
+                            for(var i = 0; i < elems.length; i++) {
+                                elems[i].disabled = true;
+                            }
+                            if (playerScore === 3){
+                                var playerWin = "Congratulations you win!!!!!";
+                                alert (playerWin);
+                            }
+                            else if (computerScore === 3){
+                                var computerWin = "YOU LOSE >:( !!!!! LOSER !!!!";
+                                alert (computerWin);
+                            }
+                        }
+                    }
+                </script>
+            </div>
+            <div class = "textInput">
+                <label for = "querey"> Input your querey: </label>
+                <br>
+                <textarea name = "querey" rows = 2 cols= "40">
+                </textarea>
+                <br><br>
+            </div>
+        </div>
+</body>
+</html>
